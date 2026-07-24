@@ -11,50 +11,66 @@ connection();
 
 app.use(express.json());
 
+// Signup Seeker
+app.post("/signup/seeker", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-//signup
-app.post("/signup", async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-        // Check if email already exists
-        const existingUser = await User.findOne({
-            email: email.toLowerCase()
-        });
-        if (existingUser) {
-            return res.status(409).json({
-                success: false,
-                message: "Email already exists."
-            });
-        }
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-        // Create user
-        const newUser = new User({
-            name,
-            email,
-            password: hashedPassword
-            // role will automatically be "seeker"
-        });
-        await newUser.save();
-        return res.status(201).json({
-            success: true,
-            message: "User registered successfully.",
-            user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email,
-                role: newUser.role
-            }
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server Error"
-        });
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
     }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already registered" });
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: "seeker",
+    });
+
+    res.status(201).json({
+      message: "Seeker account created successfully",
+      user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Signup failed", error: err.message });
+  }
 });
 
+//Signup - Employeer
+app.post("/signup/employer", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already registered" });
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: "employer",
+    });
+
+    res.status(201).json({
+      message: "Employer account created successfully",
+      user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Signup failed", error: err.message });
+  }
+});
+
+//login 
 app.post("/login", async (req, res) => {
      try{
         const {email,password} = req.body;
@@ -98,19 +114,6 @@ app.post("/login", async (req, res) => {
         })
     }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.listen(8080, () => {
     console.log("Server is listening")
