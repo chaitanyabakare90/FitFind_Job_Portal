@@ -7,11 +7,13 @@ const User = require("./models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("./middleware/verifyToken");
+const cors = require("cors");
 connection();
 
+app.use(cors());
 app.use(express.json());
-
 // Signup Seeker
+
 app.post("/signup/seeker", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -24,14 +26,14 @@ app.post("/signup/seeker", async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ message: "Email already registered" });
     }
-
-    const user = await User.create({
+    const hashPassword = await bcrypt.hash(password,10);
+    const user = new User({
       name,
       email,
-      password,
+      password : hashPassword,
       role: "seeker",
     });
-
+    await user.save();
     res.status(201).json({
       message: "Seeker account created successfully",
       user: { id: user._id, name: user.name, email: user.email, role: user.role },
@@ -53,14 +55,14 @@ app.post("/signup/employer", async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ message: "Email already registered" });
     }
-
-    const user = await User.create({
+    const hashPassword = await bcrypt.hash(password,10);
+    const user = new User({
       name,
       email,
-      password,
+      password : hashPassword,
       role: "employer",
     });
-
+    await user.save();
     res.status(201).json({
       message: "Employer account created successfully",
       user: { id: user._id, name: user.name, email: user.email, role: user.role },

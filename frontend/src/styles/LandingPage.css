@@ -1,0 +1,315 @@
+/* ============================================================
+   FitFind – Landing Page Styles
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Page wrapper ─────────────────────────────────────────── */
+.landing-page {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #0b0b14;
+    background-image:
+        radial-gradient(ellipse 80% 55% at 50% -5%, rgba(124, 58, 237, 0.4) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 35% at 92% 85%, rgba(79, 70, 229, 0.25) 0%, transparent 60%);
+    font-family: 'Inter', system-ui, sans-serif;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
+
+/* ── Animated background blobs ────────────────────────────── */
+.landing-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    animation: blobDrift 12s ease-in-out infinite;
+    opacity: 0.35;
+}
+
+.landing-blob--purple {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #7c3aed, #4f46e5);
+    top: -150px;
+    left: -150px;
+    animation-delay: 0s;
+}
+
+.landing-blob--indigo {
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, #6366f1, #0ea5e9);
+    bottom: -100px;
+    right: -100px;
+    animation-delay: -6s;
+}
+
+@keyframes blobDrift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(40px, -40px) scale(1.08); }
+    66%       { transform: translate(-25px, 30px) scale(0.93); }
+}
+
+/* ── Glass card ───────────────────────────────────────────── */
+.landing-card {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 28px;
+    padding: 3.5rem 3rem 3rem;
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    box-shadow:
+        0 0 0 1px rgba(124, 58, 237, 0.12),
+        0 30px 70px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    animation: cardSlideUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cardSlideUp {
+    from { opacity: 0; transform: translateY(48px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Live badge ───────────────────────────────────────────── */
+.landing-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(124, 58, 237, 0.18);
+    border: 1px solid rgba(124, 58, 237, 0.4);
+    border-radius: 999px;
+    padding: 5px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #c084fc;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1.75rem;
+    animation: badgePulse 3.5s ease-in-out infinite;
+}
+
+.landing-badge__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #a855f7;
+    flex-shrink: 0;
+    animation: dotBlink 1.6s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.35); }
+    50%       { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0); }
+}
+
+@keyframes dotBlink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.25; }
+}
+
+/* ── Heading ──────────────────────────────────────────────── */
+.landing-heading {
+    font-size: clamp(1.9rem, 4.5vw, 2.75rem);
+    font-weight: 800;
+    color: #f0f0ff;
+    line-height: 1.18;
+    margin: 0 0 0.75rem;
+    letter-spacing: -1.2px;
+    font-family: 'Inter', sans-serif;
+}
+
+.landing-heading__accent {
+    background: linear-gradient(125deg, #c084fc 0%, #818cf8 45%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ── Subtitle ─────────────────────────────────────────────── */
+.landing-subtitle {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0 0 2.5rem;
+    font-weight: 400;
+    line-height: 1.65;
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ── Action buttons wrapper ───────────────────────────────── */
+.landing-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 2rem;
+}
+
+/* ── Base button ──────────────────────────────────────────── */
+.landing-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 28px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.28s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.1px;
+}
+
+.landing-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0);
+    transition: background 0.2s ease;
+    border-radius: inherit;
+}
+
+.landing-btn:hover::after {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.landing-btn:hover {
+    transform: translateY(-2px);
+}
+
+.landing-btn:active {
+    transform: translateY(0);
+}
+
+.landing-btn__icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Primary – Job Seeker */
+.landing-btn--primary {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    color: #fff;
+    border: none;
+    box-shadow:
+        0 0 0 1px rgba(139, 92, 246, 0.35),
+        0 8px 28px rgba(124, 58, 237, 0.45);
+}
+
+.landing-btn--primary:hover {
+    box-shadow:
+        0 0 0 1px rgba(139, 92, 246, 0.55),
+        0 14px 36px rgba(124, 58, 237, 0.6);
+}
+
+/* Secondary – Hiring */
+.landing-btn--secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+.landing-btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    color: #fff;
+}
+
+/* ── "Already have an account?" divider ───────────────────── */
+.landing-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+    color: rgba(255, 255, 255, 0.22);
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.landing-divider::before,
+.landing-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Login link ───────────────────────────────────────────── */
+.landing-login-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.landing-login-link:hover {
+    color: #c084fc;
+    background: rgba(192, 132, 252, 0.08);
+    border-color: rgba(192, 132, 252, 0.3);
+}
+
+.landing-login-link__arrow {
+    transition: transform 0.2s ease;
+}
+
+.landing-login-link:hover .landing-login-link__arrow {
+    transform: translateX(4px);
+}
+
+/* ── Footer tagline ───────────────────────────────────────── */
+.landing-footer {
+    margin-top: 2rem;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.18);
+    text-align: center;
+    letter-spacing: 0.2px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 520px) {
+    .landing-card {
+        padding: 2.5rem 1.75rem;
+        border-radius: 20px;
+    }
+
+    .landing-heading {
+        font-size: 1.65rem;
+    }
+
+    .landing-subtitle {
+        font-size: 0.88rem;
+    }
+}
