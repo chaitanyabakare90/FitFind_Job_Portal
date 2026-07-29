@@ -30,7 +30,11 @@ export default function Login() {
             console.log(response.data);
             localStorage.setItem("token", response.data.token);
             setFormData({ email: "", password: "" });
-            navigate("/");
+            if(response.data.user.role === "employer"){
+                navigate("/employer/dashboard");
+            }else{
+                navigate("/seeker/dashboard");
+            }
         } catch (err) {
             console.log(err.message);
             const msg = err.response?.data?.message || "Login failed. Please try again.";

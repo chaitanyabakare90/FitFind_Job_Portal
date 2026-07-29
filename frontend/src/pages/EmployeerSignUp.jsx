@@ -38,7 +38,7 @@ export default function EmployeerSignUp() {
             console.log(response.data);
             setSuccessMsg("Company account created! Redirecting...");
             setFormData({ companyName: "", email: "", password: "" });
-            setTimeout(() => navigate("/"), 1500);
+            setTimeout(() => navigate("/login"), 1500);
         } catch (err) {
             console.log(err.message);
             const msg = err.response?.data?.message || "Signup failed. Please try again.";
