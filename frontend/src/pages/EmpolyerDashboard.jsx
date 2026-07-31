@@ -12,8 +12,7 @@ export default function EmpolyerDashboard(){
     
     return (
         <>
-            <h1>Welcome Seeker</h1>
-
+            <h1>Welcome Employer</h1>
             <button onClick={handleLogout}>
                 Logout
             </button>

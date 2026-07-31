@@ -6,6 +6,7 @@ import SeekerSignUp from "./pages/SeekerSignUp"
 import EmpolyerDashboard from "./pages/EmpolyerDashboard"
 import SeekerDashboard from "./pages/SeekerDashboard"
 import ProtectedRoute from "./components/ProtectedRoute"
+import CreateJob from "./pages/CreateJob"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/employer/dashboard" element={<ProtectedRoute role="employer"><EmpolyerDashboard/> </ProtectedRoute>}></Route>
         <Route path="/seeker/dashboard" element={<ProtectedRoute role="seeker"><SeekerDashboard/> </ProtectedRoute>}></Route>
+        <Route path="/jobs" element={<CreateJob></CreateJob>}></Route>
       </Routes>
     </>
   )

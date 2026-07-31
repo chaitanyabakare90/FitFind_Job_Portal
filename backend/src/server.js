@@ -7,7 +7,10 @@ const User = require("./models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("./middleware/verifyToken");
+const authorizeRoles = require("./middleware/authorizeRoles");
 const cors = require("cors");
+const Job = require("./models/job");
+
 connection();
 
 app.use(cors());
@@ -137,6 +140,33 @@ app.post("/login", async (req, res) => {
       message: "Internal Server Error",
     })
   }
+})
+
+app.post("/jobs",verifyToken,authorizeRoles("employer"), async (req,res) =>{
+  try{
+    const job = req.body;
+    const id = req.user.id;
+    const newJob = new Job({
+      title : job.title,
+      company : job.company,
+      description : job.description,
+      location : job.location,
+      salary : job.salary,
+      skills : job.skills,
+      createdBy : id
+    })
+    await newJob.save();
+    res.status(200).json({
+      message : "Job created successfully",
+    })
+
+  }catch(err){
+    console.error(err);
+    res.status(500).json({
+      message: "Job Creation Failed",
+    })
+  }
+  
 })
 
 app.listen(8080, () => {
