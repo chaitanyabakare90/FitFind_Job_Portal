@@ -5,6 +5,7 @@ import Login from "./pages/Login"
 import SeekerSignUp from "./pages/SeekerSignUp"
 import EmpolyerDashboard from "./pages/EmpolyerDashboard"
 import SeekerDashboard from "./pages/SeekerDashboard"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
         <Route path="/signup/seeker" element={<SeekerSignUp/>}>  </Route>
         <Route path="/signup/employeer" element={<EmployeerSignUp/>}> </Route>
         <Route path="/login" element={<Login/>}></Route>
-        <Route path="/employer/dashboard" element={<EmpolyerDashboard/>}></Route>
-        <Route path="/seeker/dashboard" element={<SeekerDashboard/>}></Route>
+        <Route path="/employer/dashboard" element={<ProtectedRoute role="employer"><EmpolyerDashboard/> </ProtectedRoute>}></Route>
+        <Route path="/seeker/dashboard" element={<ProtectedRoute role="seeker"><SeekerDashboard/> </ProtectedRoute>}></Route>
       </Routes>
     </>
   )

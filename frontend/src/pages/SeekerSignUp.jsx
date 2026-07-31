@@ -31,9 +31,11 @@ export default function SeekerSignUp() {
         try {
             const response = await axios.post("http://localhost:8080/signup/seeker", formData);
             console.log(response.data);
+            localStorage.setItem("token",response.data.token);
+            localStorage.setItem("role", response.data.user.role);
             setSuccessMsg("Account created! Redirecting...");
             setFormData({ name: "", email: "", password: "" });
-            setTimeout(() => navigate("/login"), 1500);
+            setTimeout(() => navigate("/seeker/dashboard"), 1500);
         } catch (err) {
             console.log(err.message);
             const msg = err.response?.data?.message || "Signup failed. Please try again.";

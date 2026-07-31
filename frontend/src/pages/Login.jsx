@@ -29,6 +29,7 @@ export default function Login() {
             const response = await axios.post("http://localhost:8080/login", formData);
             console.log(response.data);
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("role", response.data.user.role);
             setFormData({ email: "", password: "" });
             if(response.data.user.role === "employer"){
                 navigate("/employer/dashboard");
