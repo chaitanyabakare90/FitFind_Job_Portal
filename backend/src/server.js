@@ -10,6 +10,7 @@ const verifyToken = require("./middleware/verifyToken");
 const authorizeRoles = require("./middleware/authorizeRoles");
 const cors = require("cors");
 const Job = require("./models/job");
+const Application = require("./models/application");
 
 connection();
 
@@ -184,6 +185,32 @@ app.get("/jobs",verifyToken,authorizeRoles("seeker"),async(req,res) =>{
     }
 })
 
+//Apply For Jobs
+app.post("/application",verifyToken,authorizeRoles("seeker"), async(req,res) =>{
+    try {
+      const {jobId} = req.body;
+      const seekerId = req.user.id;
+      const existingApplication = await Application.find({seeker : seekerId, job : jobId});
+      if(existingApplication.length > 0){
+        return res.status(409).json({
+          message : "You Have Already Applied for the Job"
+        })
+      } 
+      const newApplication = new Application({
+        seeker : seekerId,
+        job : jobId
+      })
+      await newApplication.save();
+      res.status(200).json({
+      message : "Application Submitted successfully",
+    })
+    }catch(err){
+      console.error(err);
+      res.status(500).json({
+        message: "Internal Server Error",
+      })
+    }
+})
 
 app.listen(8080, () => {
   console.log("Server is listening")

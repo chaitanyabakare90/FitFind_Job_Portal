@@ -23,6 +23,23 @@ export default function GetJobs(){
         fetchData();
     },[])
 
+    let handleOnClick = async (job_id) => {
+        try{
+            const response = await axios.post("http://localhost:8080/applications",
+                {
+                    job_id : job_id
+                },
+                {
+                    headers : {
+                        Authorization : `Bearer ${token}` 
+                    }
+                }
+            );
+
+        }catch(err){
+            console.log(err.message);
+        }
+    }
 
     return(
         <div>
@@ -31,6 +48,7 @@ export default function GetJobs(){
                     <h2>{job.title}</h2>
                     <p>{job.company}</p>
                     <p>{job.location}</p>
+                    <button onClick={()=> handleOnClick(job._id)}>Apply</button>
                 </div>
             ))}
         </div>
