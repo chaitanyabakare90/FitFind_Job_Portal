@@ -1,7 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
-import "../styles/SeekerSignUp.css"
+import "../../styles/SeekerSignUp.css"
 
 export default function SeekerSignUp() {
     let [formData, setFormData] = useState({

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
-import "../styles/EmployeerSignUp.css"
+import "../../styles/EmployeerSignUp.css"
 
 export default function EmployeerSignUp() {
     let [formData, setFormData] = useState({

@@ -142,6 +142,7 @@ app.post("/login", async (req, res) => {
   }
 })
 
+//Job Creation
 app.post("/jobs",verifyToken,authorizeRoles("employer"), async (req,res) =>{
   try{
     const job = req.body;
@@ -168,6 +169,21 @@ app.post("/jobs",verifyToken,authorizeRoles("employer"), async (req,res) =>{
   }
   
 })
+//Fetch Jobs
+app.get("/jobs",verifyToken,authorizeRoles("seeker"),async(req,res) =>{
+    try{
+      const jobs = await Job.find({});
+      res.status(200).json({
+         jobs : jobs
+      })
+    }catch(err){
+      console.error(err);
+      res.status(500).json({
+        message: "Internal Server Error",
+      })
+    }
+})
+
 
 app.listen(8080, () => {
   console.log("Server is listening")
