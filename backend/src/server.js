@@ -144,7 +144,7 @@ app.post("/login", async (req, res) => {
 })
 
 //Job Creation
-app.post("/jobs",verifyToken,authorizeRoles("employer"), async (req,res) =>{
+app.post("/employer/create_jobs",verifyToken,authorizeRoles("employer"), async (req,res) =>{
   try{
     const job = req.body;
     const id = req.user.id;
@@ -170,6 +170,13 @@ app.post("/jobs",verifyToken,authorizeRoles("employer"), async (req,res) =>{
   }
   
 })
+
+// Keep backward compatibility for endpoint typo
+app.post("/empolyer/create_jobs", verifyToken, authorizeRoles("employer"), async (req, res) => {
+  req.url = "/employer/create_jobs";
+  app.handle(req, res);
+});
+
 //Fetch Jobs
 app.get("/jobs",verifyToken,authorizeRoles("seeker"),async(req,res) =>{
     try{
@@ -188,7 +195,12 @@ app.get("/jobs",verifyToken,authorizeRoles("seeker"),async(req,res) =>{
 //Apply For Jobs
 app.post("/application",verifyToken,authorizeRoles("seeker"), async(req,res) =>{
     try {
-      const {jobId} = req.body;
+      const jobId = req.body.jobId || req.body.job_id;
+      if (!jobId) {
+        return res.status(400).json({
+          message: "Job ID is required"
+        });
+      }
       const seekerId = req.user.id;
       const existingApplication = await Application.find({seeker : seekerId, job : jobId});
       if(existingApplication.length > 0){
@@ -202,13 +214,29 @@ app.post("/application",verifyToken,authorizeRoles("seeker"), async(req,res) =>{
       })
       await newApplication.save();
       res.status(200).json({
-      message : "Application Submitted successfully",
-    })
+        message : "Application Submitted successfully",
+      })
     }catch(err){
       console.error(err);
       res.status(500).json({
         message: "Internal Server Error",
       })
+    }
+})
+
+
+app.get("/employer/jobs",verifyToken,authorizeRoles("employer"),async (req,res) => {
+    try{
+        const employerId = req.user.id;
+        const jobs = await Job.find({createdBy: employerId});
+        res.status(200).json({
+          jobs : jobs
+        })
+    }catch(err){
+        console.error(err);
+        res.status(500).json({
+          message: "Internal Server Error",
+        })
     }
 })
 

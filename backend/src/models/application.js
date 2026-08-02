@@ -14,7 +14,7 @@ const applicationModel = new Schema(
         },
         status :{
             type : String,
-            default : "Pending",
+            default : "pending",
             enum : ["pending","accepted","rejected"]
         },
     },

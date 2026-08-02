@@ -1,18 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import SeekerSidebar from "../../components/SeekerSidebar";
+import EmployerSidebar from "../../components/EmployerSidebar";
 import "../../styles/dashboard.css";
 
+// ── Existing logic – PRESERVED INTACT ────────────────────────
 export default function GetJobs() {
-    // ── Existing logic – PRESERVED INTACT ────────────────────
     const [jobs, setJobs] = useState([]);
     const token = localStorage.getItem("token");
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get("http://localhost:8080/jobs",
+                const response = await axios.get("http://localhost:8080/employer/jobs",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -26,24 +27,6 @@ export default function GetJobs() {
         }
         fetchData();
     }, [])
-
-    let handleOnClick = async (job_id) => {
-        try {
-            const response = await axios.post("http://localhost:8080/application",
-                {
-                    jobId: job_id
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
-
-        } catch (err) {
-            console.log(err.message);
-        }
-    }
     // ─────────────────────────────────────────────────────────
 
     const navigate = useNavigate();
@@ -57,17 +40,17 @@ export default function GetJobs() {
         <div className="dashboard-layout">
 
             {/* ── Sidebar ───────────────────────────────────── */}
-            <SeekerSidebar onLogout={handleLogout} />
+            <EmployerSidebar onLogout={handleLogout} />
 
             {/* ── Main ──────────────────────────────────────── */}
             <main className="dashboard-main">
 
                 {/* Topbar */}
                 <header className="dashboard-topbar">
-                    <h1 className="dashboard-topbar__title">Browse Jobs</h1>
+                    <h1 className="dashboard-topbar__title">Manage Jobs</h1>
                     <div className="dashboard-topbar__right">
-                        <span className="dashboard-topbar__name">Job Seeker</span>
-                        <div className="dashboard-topbar__avatar">S</div>
+                        <span className="dashboard-topbar__name">Employer</span>
+                        <div className="dashboard-topbar__avatar">E</div>
                     </div>
                 </header>
 
@@ -75,9 +58,9 @@ export default function GetJobs() {
 
                     {/* Page header */}
                     <div className="page-header">
-                        <h2 className="page-header__title">All Available Jobs</h2>
+                        <h2 className="page-header__title">Your Job Listings</h2>
                         <p className="page-header__subtitle">
-                            Browse open positions and apply directly from here.
+                            All jobs you have posted. View applicants for each listing.
                         </p>
                     </div>
 
@@ -85,23 +68,26 @@ export default function GetJobs() {
                     {jobs === null ? (
                         <div className="dashboard-loading">
                             <span className="spinner"></span>
-                            Fetching available jobs...
+                            Loading your job listings...
                         </div>
                     ) : jobs.length === 0 ? (
                         <div className="empty-state">
-                            <span className="empty-state__icon">🔍</span>
-                            <h3 className="empty-state__title">No Jobs Available Right Now</h3>
+                            <span className="empty-state__icon">📭</span>
+                            <h3 className="empty-state__title">No Job Listings Found</h3>
                             <p className="empty-state__subtitle">
-                                Check back soon — new opportunities are posted daily.
+                                You haven't posted any jobs yet. Get started now.
                             </p>
+                            <Link to="/employer/create_jobs" className="btn-primary">
+                                ➕ Post a Job
+                            </Link>
                         </div>
                     ) : (
                         <div className="job-cards-grid">
                             {jobs.map((job) => (
                                 <div key={job._id} className="job-card">
                                     <div className="job-card__header">
-                                        <div className="job-card__logo">🏢</div>
-                                        <span className="job-card__badge">Open</span>
+                                        <div className="job-card__logo">💼</div>
+                                        <span className="job-card__badge">Active</span>
                                     </div>
 
                                     <h3 className="job-card__title">{job.title}</h3>
@@ -126,13 +112,12 @@ export default function GetJobs() {
                                             </div>
                                             <div className="job-card__salary-label">per year</div>
                                         </div>
-                                        <button
-                                            className="btn-apply"
-                                            onClick={() => handleOnClick(job._id)}
-                                            id={`apply-btn-${job._id}`}
+                                        <Link
+                                            to={`/view-applicants/${job._id}`}
+                                            className="btn-view-applicants"
                                         >
-                                            ⚡ Apply Now
-                                        </button>
+                                            👥 View Applicants
+                                        </Link>
                                     </div>
                                 </div>
                             ))}
