@@ -13,7 +13,7 @@ export default function LandingPage() {
             {/* ── Navbar ────────────────────────────────────────── */}
             <nav className="landing-nav">
                 <div className="landing-nav__brand">
-                    <div className="landing-nav__brand-icon">🎯</div>
+                    <div className="landing-nav__brand-icon"><img src="/favicon.svg" alt="" /></div>
                     <span className="landing-nav__brand-name">FitFind</span>
                 </div>
                 <div className="landing-nav__links">
