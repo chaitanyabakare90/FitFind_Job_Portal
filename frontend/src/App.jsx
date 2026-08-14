@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import CreateJob from "./pages/Employer_Pages/CreateJob"
 import GetJobs from "./pages/Seeker_Pages/GetJobs"
 import EmployerJobs from "./pages/Employer_Pages/EmployerJobs"
+import ViewApplicants from "./pages/Employer_Pages/ViewApplicants"
 
 function App() {
   return (
@@ -42,6 +43,14 @@ function App() {
           element={
             <ProtectedRoute role="employer">
               <EmployerJobs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-applicants/:jobId"
+          element={
+            <ProtectedRoute role="employer">
+              <ViewApplicants />
             </ProtectedRoute>
           }
         />
