@@ -173,7 +173,7 @@ export default function CreateJob() {
                             {/* Skills */}
                             <div className="form-field">
                                 <label className="form-field__label" htmlFor="skills">
-                                    Required Skills <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.3)" }}>(comma-separated)</span>
+                                    Required Skills <span className="form-field__label-hint">(comma-separated)</span>
                                 </label>
                                 <input
                                     className="form-field__input"

@@ -828,6 +828,18 @@
   margin-top: 0.5rem;
 }
 
+/* ── Disabled quick-action card (SeekerDashboard) ─────────── */
+.quick-action-card--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Form label hint text (CreateJob skills field) ─────────── */
+.form-field__label-hint {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+}
+
 /* ── Mobile topbar hamburger (future use) ──────────────────── */
 .topbar-menu-btn {
   display: none;

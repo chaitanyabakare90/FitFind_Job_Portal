@@ -98,7 +98,7 @@ export default function SeekerDashboard() {
                             <div className="quick-action-card__icon-wrap">🔎</div>
                             <span className="quick-action-card__label">Browse All Jobs</span>
                         </NavLink>
-                        <div className="quick-action-card" style={{ opacity: 0.4, cursor: "not-allowed" }}>
+                        <div className="quick-action-card quick-action-card--disabled">
                             <div className="quick-action-card__icon-wrap">📄</div>
                             <span className="quick-action-card__label">My Applications</span>
                         </div>
