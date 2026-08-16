@@ -29,6 +29,29 @@ export default function ViewApplicants() {
         }
         getApplicants();
     }, [])
+
+    let handleOnClick = async (applicantId, Status) => {
+        try {
+
+            const response = await axios.patch(`http://localhost:8080/application/${applicantId}`, {
+                applicationStatus: Status
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            setApplicants((currentApplicants) =>
+                currentApplicants.map((application) =>
+                    application._id === applicantId
+                        ? { ...application, status: Status }
+                        : application
+                )
+            );
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
     // ─────────────────────────────────────────────────────────────
 
     const navigate = useNavigate();
@@ -90,7 +113,7 @@ export default function ViewApplicants() {
                             Loading applicants...
                         </div>
 
-                    /* Empty state */
+                        /* Empty state */
                     ) : applicants.length === 0 ? (
                         <div className="empty-state">
                             <span className="empty-state__icon">📭</span>
@@ -100,7 +123,7 @@ export default function ViewApplicants() {
                             </p>
                         </div>
 
-                    /* Applicants grid */
+                        /* Applicants grid */
                     ) : (
                         <div className="va-grid">
                             {applicants.map((applicant, index) => (
@@ -129,11 +152,26 @@ export default function ViewApplicants() {
                                             ✉️ {applicant.seeker?.email ?? "No email provided"}
                                         </span>
                                     </div>
-                                                
+
                                     {/* Footer */}
                                     <div className="va-card__footer">
-                                        <span>👤</span>
-                                        <span>Job Seeker</span>
+                                        <span className={`va-status-pill${
+                                            applicant.status === "accepted" ? " va-status--accepted"
+                                            : applicant.status === "rejected" ? " va-status--rejected"
+                                            : ""
+                                        }`}>{applicant.status}</span>
+                                        <span>{
+                                            applicant.status === "pending" ? (
+                                                <div className="va-action-btns">
+                                                    <button className="va-btn va-btn--accept" name="Accepted" onClick={() => handleOnClick(applicant._id, "accepted")}>✓ Accept</button>
+                                                    <button className="va-btn va-btn--reject" name="Rejected" onClick={() => handleOnClick(applicant._id, "rejected")}>✕ Reject</button>
+                                                </div>
+                                            ) : (
+                                                <div>
+
+                                                </div>
+                                            )}
+                                        </span>
                                     </div>
                                 </div>
                             ))}

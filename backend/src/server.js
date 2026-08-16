@@ -144,31 +144,31 @@ app.post("/login", async (req, res) => {
 })
 
 //Job Creation
-app.post("/employer/create_jobs",verifyToken,authorizeRoles("employer"), async (req,res) =>{
-  try{
+app.post("/employer/create_jobs", verifyToken, authorizeRoles("employer"), async (req, res) => {
+  try {
     const job = req.body;
     const id = req.user.id;
     const newJob = new Job({
-      title : job.title,
-      company : job.company,
-      description : job.description,
-      location : job.location,
-      salary : job.salary,
-      skills : job.skills,
-      createdBy : id
+      title: job.title,
+      company: job.company,
+      description: job.description,
+      location: job.location,
+      salary: job.salary,
+      skills: job.skills,
+      createdBy: id
     })
     await newJob.save();
     res.status(200).json({
-      message : "Job created successfully",
+      message: "Job created successfully",
     })
 
-  }catch(err){
+  } catch (err) {
     console.error(err);
     res.status(500).json({
       message: "Job Creation Failed",
     })
   }
-  
+
 })
 
 // Keep backward compatibility for endpoint typo
@@ -178,101 +178,145 @@ app.post("/empolyer/create_jobs", verifyToken, authorizeRoles("employer"), async
 });
 
 //Fetch Jobs
-app.get("/jobs",verifyToken,authorizeRoles("seeker"),async(req,res) =>{
-    try{
-      const jobs = await Job.find({});
-      res.status(200).json({
-         jobs : jobs
-      })
-    }catch(err){
-      console.error(err);
-      res.status(500).json({
-        message: "Internal Server Error",
-      })
-    }
+app.get("/jobs", verifyToken, authorizeRoles("seeker"), async (req, res) => {
+  try {
+    const jobs = await Job.find({});
+    res.status(200).json({
+      jobs: jobs
+    })
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Internal Server Error",
+    })
+  }
 })
 
 //Apply For Jobs
-app.post("/application",verifyToken,authorizeRoles("seeker"), async(req,res) =>{
-    try {
-      const jobId = req.body.jobId || req.body.job_id;
-      if (!jobId) {
-        return res.status(400).json({
-          message: "Job ID is required"
-        });
-      }
-      const seekerId = req.user.id;
-      const existingApplication = await Application.find({seeker : seekerId, job : jobId});
-      if(existingApplication.length > 0){
-        return res.status(409).json({
-          message : "You Have Already Applied for the Job"
-        })
-      } 
-      const newApplication = new Application({
-        seeker : seekerId,
-        job : jobId
-      })
-      await newApplication.save();
-      res.status(200).json({
-        message : "Application Submitted successfully",
-      })
-    }catch(err){
-      console.error(err);
-      res.status(500).json({
-        message: "Internal Server Error",
+app.post("/application", verifyToken, authorizeRoles("seeker"), async (req, res) => {
+  try {
+    const jobId = req.body.jobId || req.body.job_id;
+    if (!jobId) {
+      return res.status(400).json({
+        message: "Job ID is required"
+      });
+    }
+    const seekerId = req.user.id;
+    const existingApplication = await Application.find({ seeker: seekerId, job: jobId });
+    if (existingApplication.length > 0) {
+      return res.status(409).json({
+        message: "You Have Already Applied for the Job"
       })
     }
+    const newApplication = new Application({
+      seeker: seekerId,
+      job: jobId
+    })
+    await newApplication.save();
+    res.status(200).json({
+      message: "Application Submitted successfully",
+    })
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Internal Server Error",
+    })
+  }
 })
 
 //Jobs posted by employee
-app.get("/employer/jobs",verifyToken,authorizeRoles("employer"),async (req,res) => {
-    try{
-        const employerId = req.user.id;
-        const jobs = await Job.find({createdBy: employerId});
-        res.status(200).json({
-          jobs : jobs
-        })
-    }catch(err){
-        console.error(err);
-        res.status(500).json({
-          message: "Internal Server Error",
-        })
-    }
+app.get("/employer/jobs", verifyToken, authorizeRoles("employer"), async (req, res) => {
+  try {
+    const employerId = req.user.id;
+    const jobs = await Job.find({ createdBy: employerId });
+    res.status(200).json({
+      jobs: jobs
+    })
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Internal Server Error",
+    })
+  }
 })
 
 //view-Applicants
-app.get("/view-applicants/:jobId",verifyToken,authorizeRoles("employer"),async (req, res) => {
-        try {
-            const { jobId } = req.params;
-            // Find the job
-            const job = await Job.findById(jobId);
-            if (!job) {
-                return res.status(404).json({
-                    message: "Job not found"
-                });
-            }
-            // Make sure this job belongs to the logged-in employer
-            if (job.createdBy.toString() !== req.user.id) {
-                return res.status(403).json({
-                    message: "You are not authorized to view these applicants"
-                });
-            }
-            // Find applications for this job and get seeker details
-            const applicants = await Application.find({
-                job: jobId
-            }).populate("seeker", "name email");
-
-            res.status(200).json({
-                applicants
-            });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                message: "Internal Server Error"
-            });
-        }
+app.get("/view-applicants/:jobId", verifyToken, authorizeRoles("employer"), async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    // Find the job
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({
+        message: "Job not found"
+      });
     }
+    // Make sure this job belongs to the logged-in employer
+    if (job.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "You are not authorized to view these applicants"
+      });
+    }
+    // Find applications for this job and get seeker details
+    const applicants = await Application.find({
+      job: jobId
+    }).populate("seeker", "name email");
+
+    res.status(200).json({
+      applicants
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Internal Server Error"
+    });
+  }
+}
 );
+//Update status of the application
+
+app.patch("/application/:applicationId", verifyToken, authorizeRoles("employer"), async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+    const { applicationStatus } = req.body;
+    const application = await Application.findById({ _id: applicationId });
+
+    if (!application) {
+      return res.status(404).json({
+        message: "Application not found"
+      });
+    }
+
+    const job = await Job.findById(application.job);
+
+    if (!job) {
+      return res.status(404).json({
+        message: "Job not found"
+      });
+    }
+
+    if (job.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "You are not authorized to update this application"
+      });
+    }
+
+    application.status = applicationStatus;
+    await application.save();
+
+    res.status(200).json({
+      message: "Application status updated successfully",
+      application: application
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Internal Server Error"
+    });
+  }
+})
 
 
 app.listen(8080, () => {
