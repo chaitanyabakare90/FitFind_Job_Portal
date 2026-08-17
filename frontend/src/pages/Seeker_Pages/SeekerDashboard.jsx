@@ -98,10 +98,10 @@ export default function SeekerDashboard() {
                             <div className="quick-action-card__icon-wrap">🔎</div>
                             <span className="quick-action-card__label">Browse All Jobs</span>
                         </NavLink>
-                        <div className="quick-action-card quick-action-card--disabled">
+                        <NavLink to="/seeker/appliedjobs" className="quick-action-card" id="quick-browse-jobs">
                             <div className="quick-action-card__icon-wrap">📄</div>
                             <span className="quick-action-card__label">My Applications</span>
-                        </div>
+                        </NavLink>
                     </div>
 
                     {/* Available jobs */}

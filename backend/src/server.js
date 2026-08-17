@@ -273,8 +273,9 @@ app.get("/view-applicants/:jobId", verifyToken, authorizeRoles("employer"), asyn
   }
 }
 );
-//Update status of the application
 
+
+//Update status of the application
 app.patch("/application/:applicationId", verifyToken, authorizeRoles("employer"), async (req, res) => {
   try {
     const { applicationId } = req.params;
@@ -318,6 +319,28 @@ app.patch("/application/:applicationId", verifyToken, authorizeRoles("employer")
   }
 })
 
+//Get Applications of the Seeker
+
+app.get("/applications", verifyToken, authorizeRoles("seeker"), async (req, res) => {
+  try {
+    const seekerId = req.user.id;
+
+    const applications = await Application.find({
+      seeker: seekerId
+    }).populate("job", "title company location");
+    // console.log(applications);
+    res.status(200).json({
+      applications: applications
+    });
+
+  } catch (err) {
+      console.error(err);
+
+      res.status(500).json({
+        message: "Internal Server Error"
+      });
+  }
+})
 
 app.listen(8080, () => {
   console.log("Server is listening")

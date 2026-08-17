@@ -44,10 +44,15 @@ export default function SeekerSidebar({ onLogout }) {
                     Browse Jobs
                 </NavLink>
 
-                <button className="sidebar-nav__item" disabled style={{ opacity: 0.35, cursor: "not-allowed" }}>
+                <NavLink
+                    to="/seeker/appliedjobs"
+                    className={({ isActive }) =>
+                        `sidebar-nav__item ${isActive ? "active" : ""}`
+                    }
+                >
                     <span className="sidebar-nav__item-icon">📄</span>
                     Applied Jobs
-                </button>
+                </NavLink>
 
                 <button className="sidebar-nav__item" disabled style={{ opacity: 0.35, cursor: "not-allowed" }}>
                     <span className="sidebar-nav__item-icon">🔖</span>

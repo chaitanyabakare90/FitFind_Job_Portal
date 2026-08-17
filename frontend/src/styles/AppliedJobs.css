@@ -1,0 +1,176 @@
+/* ============================================================
+   FitFind – Applied Jobs Page Styles
+   Seeker | applied job cards, status pills, date formatting
+   ============================================================ */
+
+/* ── Applied-jobs count badge ──────────────────────────────── */
+.aj-count-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.aj-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(124, 58, 237, 0.14);
+  border: 1px solid rgba(124, 58, 237, 0.28);
+  color: #a78bfa;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.2px;
+}
+
+/* ── Cards grid ────────────────────────────────────────────── */
+.aj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Individual applied-job card ───────────────────────────── */
+.aj-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.aj-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg, #7c3aed, #a855f7);
+  border-radius: 16px 16px 0 0;
+}
+
+.aj-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  border-color: rgba(124, 58, 237, 0.28);
+}
+
+/* ── Card header row ───────────────────────────────────────── */
+.aj-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+/* ── Company logo placeholder ──────────────────────────────── */
+.aj-card__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(59, 130, 246, 0.18));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Status pill ───────────────────────────────────────────── */
+.aj-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  flex-shrink: 0;
+
+  /* default = pending */
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.28);
+}
+
+.aj-status--accepted {
+  background: rgba(16, 185, 129, 0.13) !important;
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.30) !important;
+}
+
+.aj-status--rejected {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #f87171 !important;
+  border-color: rgba(239, 68, 68, 0.28) !important;
+}
+
+/* ── Job title ─────────────────────────────────────────────── */
+.aj-card__title {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--ff-text);
+  letter-spacing: -0.2px;
+  margin: 0 0 0.2rem;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.3;
+}
+
+/* ── Company name ──────────────────────────────────────────── */
+.aj-card__company {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Meta row (location, date) ─────────────────────────────── */
+.aj-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.aj-card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.38);
+  font-weight: 500;
+}
+
+/* ── Card footer ───────────────────────────────────────────── */
+.aj-card__footer {
+  margin-top: 1.1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.aj-card__footer-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .aj-grid {
+    grid-template-columns: 1fr;
+  }
+}
