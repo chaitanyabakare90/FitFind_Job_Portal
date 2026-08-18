@@ -11,11 +11,20 @@ const authorizeRoles = require("./middleware/authorizeRoles");
 const cors = require("cors");
 const Job = require("./models/job");
 const Application = require("./models/application");
+const multer = require("multer");
+// Multer is the middleware that allows 
+// Express to receive files sent through multipart/form-data.
+const { PDFParse } = require("pdf-parse");
 
 connection();
 
 app.use(cors());
 app.use(express.json());
+
+//It is middleware that temporalily store the pdf in server memory
+const upload = multer({
+  storage: multer.memoryStorage() // Configure Multer to temporarily store uploaded files in memory
+})
 // Signup Seeker
 
 app.post("/signup/seeker", async (req, res) => {
@@ -334,13 +343,39 @@ app.get("/applications", verifyToken, authorizeRoles("seeker"), async (req, res)
     });
 
   } catch (err) {
-      console.error(err);
+    console.error(err);
 
-      res.status(500).json({
-        message: "Internal Server Error"
-      });
+    res.status(500).json({
+      message: "Internal Server Error"
+    });
   }
 })
+
+app.post("/resume_matching", verifyToken, authorizeRoles("seeker"), upload.single("resume"), async (req, res) => {
+  try {
+    // console.log(req.file.buffer);
+    const parser = new PDFParse({
+      data: req.file.buffer
+    });
+
+    const result = await parser.getText();
+
+    console.log(result.text);
+
+    await parser.destroy();
+
+    res.status(200).json({
+      message: "Resume received successfully"
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Internal Server Error"
+    });
+  }
+})
+
 
 app.listen(8080, () => {
   console.log("Server is listening")

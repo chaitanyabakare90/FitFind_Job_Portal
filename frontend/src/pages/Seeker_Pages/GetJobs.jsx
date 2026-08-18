@@ -7,6 +7,7 @@ import "../../styles/dashboard.css";
 export default function GetJobs() {
     // ── Existing logic – PRESERVED INTACT ────────────────────
     const [jobs, setJobs] = useState([]);
+    const [resumeFile,setResumeFile] = useState();
     const token = localStorage.getItem("token");
 
     useEffect(() => {
@@ -44,6 +45,35 @@ export default function GetJobs() {
             console.log(err.message);
         }
     }
+
+    let handleOnSubmit = async(event) =>{
+        try{
+            event.preventDefault();
+
+            if(!resumeFile){
+                console.log("Please select a resume");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("resume",resumeFile);
+            
+            const response = await axios.post("http://localhost:8080/resume_matching",
+                formData,
+                {
+                    headers : {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+        }catch(err){
+            console.log(err.message);
+        }
+    }
+
+    let handleOnChange = (event) =>{
+        setResumeFile(event.target.files[0]);
+        console.log(event.target.files[0]);
+    }
     // ─────────────────────────────────────────────────────────
 
     const navigate = useNavigate();
@@ -79,6 +109,13 @@ export default function GetJobs() {
                         <p className="page-header__subtitle">
                             Browse open positions and apply directly from here.
                         </p>
+                    </div>
+
+                    <div>
+                        <form onSubmit={handleOnSubmit}>
+                            <input type="file" accept=".pdf" onChange={handleOnChange}/>
+                            <button>Find Matching Jobs</button>
+                        </form>
                     </div>
 
                     {/* Jobs grid */}
