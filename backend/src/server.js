@@ -15,6 +15,9 @@ const multer = require("multer");
 // Multer is the middleware that allows 
 // Express to receive files sent through multipart/form-data.
 const { PDFParse } = require("pdf-parse");
+const { GoogleGenerativeAI } = require("@google/generative-ai"); //this is Class -> GoogleGenerativeAI
+const Jobs = require("./models/job");
+
 
 connection();
 
@@ -25,6 +28,17 @@ app.use(express.json());
 const upload = multer({
   storage: multer.memoryStorage() // Configure Multer to temporarily store uploaded files in memory
 })
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash",
+  generationConfig: {
+    temperature: 0.2,
+    maxOutputTokens: 2000
+  }
+});
+
 // Signup Seeker
 
 app.post("/signup/seeker", async (req, res) => {
@@ -360,18 +374,82 @@ app.post("/resume_matching", verifyToken, authorizeRoles("seeker"), upload.singl
 
     const result = await parser.getText();
 
-    console.log(result.text);
-
     await parser.destroy();
 
+    const prompt = `
+      You are a resume skill extraction system.
+
+      Analyze the following resume and extract the technical and professional skills
+      that are explicitly mentioned in the resume.
+
+      Return ONLY valid JSON in this exact format:
+
+      {
+        "skills": ["skill1", "skill2", "skill3"]
+      }
+
+      Rules:
+      - Include programming languages, frameworks, libraries, databases, tools,
+        technologies, and relevant technical concepts.
+      - Do not include the person's name, email, phone number, or other personal information.
+      - Do not include education details.
+      - Do not include project descriptions.
+      - Do not invent skills that are not mentioned in the resume.
+      - Avoid duplicate skills.
+      - Return only the JSON object, with no explanation or markdown.
+
+      Resume:
+      ${result.text}
+      `;
+
+    const response = await model.generateContent(prompt);
+
+    const responseText = response.response.text();
+
+    const cleanedResponse = responseText
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const skillsData = JSON.parse(cleanedResponse);
+
+    const resumeSkills = skillsData.skills;
+
+    const jobs = await Job.find({});
+
+    const normalizedResumeSkills = resumeSkills.map(skill =>
+      skill.toLowerCase().trim()
+    );
+    const matchedJobs = jobs.map((job) => {
+
+      
+
+      const normalizedJobSkills = job.skills.map(skill =>
+        skill.toLowerCase().trim()
+      );
+
+      const matchedSkills = normalizedJobSkills.filter(skill =>
+        normalizedResumeSkills.includes(skill)
+      );
+
+      const matchPercentage =
+        (matchedSkills.length / normalizedJobSkills.length) * 100;
+
+      return {
+        ...job.toObject(),
+        matchPercentage: Math.round(matchPercentage)
+      };
+    });
+    matchedJobs.sort((a, b) => b.matchPercentage - a.matchPercentage);
     res.status(200).json({
-      message: "Resume received successfully"
+      message: "Resume received successfully",
+      jobs: matchedJobs
     });
 
   } catch (err) {
     console.error(err);
     res.status(500).json({
-      message: "Internal Server Error"
+      message: "Internal Server Error",
     });
   }
 })
