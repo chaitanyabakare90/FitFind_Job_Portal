@@ -422,8 +422,6 @@ app.post("/resume_matching", verifyToken, authorizeRoles("seeker"), upload.singl
     );
     const matchedJobs = jobs.map((job) => {
 
-      
-
       const normalizedJobSkills = job.skills.map(skill =>
         skill.toLowerCase().trim()
       );

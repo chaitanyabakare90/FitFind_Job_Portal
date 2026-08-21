@@ -56,7 +56,7 @@ export default function SeekerSidebar({ onLogout }) {
 
                 <button className="sidebar-nav__item" disabled style={{ opacity: 0.35, cursor: "not-allowed" }}>
                     <span className="sidebar-nav__item-icon">🔖</span>
-                    Saved Jobs
+                    AI Recommedations
                 </button>
 
                 <span className="sidebar-nav__section-label">Account</span>

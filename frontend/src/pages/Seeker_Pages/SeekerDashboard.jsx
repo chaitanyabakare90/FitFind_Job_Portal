@@ -82,11 +82,7 @@ export default function SeekerDashboard() {
                             <div className="stat-card__value">—</div>
                             <div className="stat-card__label">Shortlisted</div>
                         </div>
-                        <div className="stat-card stat-card--pink">
-                            <span className="stat-card__icon">🔖</span>
-                            <div className="stat-card__value">—</div>
-                            <div className="stat-card__label">Saved Jobs</div>
-                        </div>
+                        
                     </div>
 
                     {/* Quick actions */}

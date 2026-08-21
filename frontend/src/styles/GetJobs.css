@@ -1,0 +1,400 @@
+/* ============================================================
+   FitFind – GetJobs / Resume Matching Styles
+   Seeker | Resume upload banner, AI matcher bar, loaders
+   ============================================================ */
+
+/* ── Resume Matcher Banner (Matches Welcome Bar Style) ─────── */
+.resume-match-banner {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.18) 0%, rgba(59, 130, 246, 0.09) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 18px;
+  padding: 1.6rem 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.resume-match-banner::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.22), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.resume-match-banner__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.resume-match-banner__text {
+  flex: 1;
+}
+
+.resume-match-banner__title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ff-text);
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.resume-match-banner__title-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #7c3aed, #3b82f6);
+  color: #ffffff;
+}
+
+.resume-match-banner__tagline {
+  font-size: 13.5px;
+  color: var(--ff-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.resume-match-banner__icon {
+  font-size: 40px;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 12px rgba(124, 58, 237, 0.35));
+}
+
+/* ── Upload & Action Bar ───────────────────────────────────── */
+.resume-upload-form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+}
+
+.resume-file-input {
+  display: none;
+}
+
+.resume-file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: var(--ff-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resume-file-label:hover {
+  background: rgba(124, 58, 237, 0.15);
+  border-color: rgba(124, 58, 237, 0.4);
+  color: #c084fc;
+}
+
+.resume-file-label--has-file {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+
+.resume-file-label--has-file:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #6ee7b7;
+}
+
+.resume-file-name {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resume-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.btn-match-resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.2px;
+}
+
+.btn-match-resume:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.6);
+  color: #ffffff;
+}
+
+.btn-match-resume:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-reset-jobs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ff-border);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.btn-reset-jobs:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Matched Alert / Filter Bar ────────────────────────────── */
+.matched-results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.matched-results-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #c084fc;
+}
+
+.matched-results-count {
+  background: rgba(124, 58, 237, 0.25);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #e9d5ff;
+  font-weight: 700;
+}
+
+/* ── AI Matching Loader Card ───────────────────────────────── */
+.matching-loader-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(124, 58, 237, 0.35);
+  border-radius: 18px;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.matching-loader-pulse {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(124, 58, 237, 0.5);
+  animation: pulseAnimation 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.pulse-ring:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.matching-loader-icon {
+  font-size: 32px;
+  z-index: 2;
+  animation: floatIcon 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulseAnimation {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes floatIcon {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+.matching-loader-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ff-text);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.3px;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.matching-loader-subtitle {
+  font-size: 13.5px;
+  color: var(--ff-muted);
+  max-width: 480px;
+  margin: 0 0 1.5rem;
+  line-height: 1.5;
+}
+
+.matching-progress-bar {
+  width: 240px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.matching-progress-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, #7c3aed, #38bdf8);
+  border-radius: 999px;
+  animation: progressSlide 1.5s ease-in-out infinite;
+}
+
+@keyframes progressSlide {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* ── Match Percentage Badges on Job Card ───────────────────── */
+.job-card__badge--high-match {
+  background: rgba(16, 185, 129, 0.18) !important;
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+.job-card__badge--med-match {
+  background: rgba(245, 158, 11, 0.18) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+
+.job-card__badge--low-match {
+  background: rgba(124, 58, 237, 0.18) !important;
+  color: #c084fc !important;
+  border-color: rgba(124, 58, 237, 0.4) !important;
+}
+
+.btn-applied-success {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  cursor: default !important;
+  box-shadow: none !important;
+}
+
+/* ── Responsive Styling ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .resume-match-banner {
+    padding: 1.25rem 1.4rem;
+  }
+
+  .resume-match-banner__header {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .resume-upload-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .resume-file-label {
+    max-width: 100%;
+    justify-content: center;
+  }
+
+  .resume-actions-group {
+    margin-left: 0;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .btn-match-resume,
+  .btn-reset-jobs {
+    width: 100%;
+    justify-content: center;
+  }
+}
