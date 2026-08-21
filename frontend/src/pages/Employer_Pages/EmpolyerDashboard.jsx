@@ -82,11 +82,7 @@ export default function EmpolyerDashboard() {
                             <div className="stat-card__value">—</div>
                             <div className="stat-card__label">Hired</div>
                         </div>
-                        <div className="stat-card stat-card--pink">
-                            <span className="stat-card__icon">👁️</span>
-                            <div className="stat-card__value">—</div>
-                            <div className="stat-card__label">Profile Views</div>
-                        </div>
+                        
                     </div>
 
                     {/* Quick actions */}
