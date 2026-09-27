@@ -11,6 +11,7 @@ import GetJobs from "./pages/Seeker_Pages/GetJobs"
 import EmployerJobs from "./pages/Employer_Pages/EmployerJobs"
 import ViewApplicants from "./pages/Employer_Pages/ViewApplicants"
 import AppliedJobs from "./pages/Seeker_Pages/AppliedJobs"
+import Recommendation from "./pages/Seeker_Pages/Recommendation"
 
 function App() {
   return (
@@ -78,6 +79,14 @@ function App() {
           element={
             <ProtectedRoute role="seeker">
               <AppliedJobs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/seeker/recommendations"
+          element={
+            <ProtectedRoute role="seeker">
+              <Recommendation />
             </ProtectedRoute>
           }
         />

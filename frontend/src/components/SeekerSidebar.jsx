@@ -54,10 +54,15 @@ export default function SeekerSidebar({ onLogout }) {
                     Applied Jobs
                 </NavLink>
 
-                <button className="sidebar-nav__item" disabled style={{ opacity: 0.35, cursor: "not-allowed" }}>
+                <NavLink
+                    to="/seeker/recommendations"
+                    className={({ isActive }) =>
+                        `sidebar-nav__item ${isActive ? "active" : ""}`
+                    }
+                >
                     <span className="sidebar-nav__item-icon">🔖</span>
                     AI Recommedations
-                </button>
+                </NavLink>
 
                 <span className="sidebar-nav__section-label">Account</span>
 
